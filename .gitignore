@@ -1,3 +1,17 @@
 node_modules/
+web/dist/
 *.db
 .DS_Store
+*.env
+.env*
+*.log
+*.xlsx
+*.csv
+*.png
+*.pyc
+__pycache__/
+pivottablejs.html
+Film_summary.xlsx
+filmDB.xlsx
+film_photos.csv
+film_sum.png

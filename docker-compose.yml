@@ -1,0 +1,23 @@
+services:
+  api:
+    build: ./api
+    restart: unless-stopped
+    volumes:
+      - ./film.db:/app/film.db
+      - ./scanned:/app/scanned:ro
+      - ./converted:/app/converted:ro
+    environment:
+      - DB_PATH=/app/film.db
+      - CONVERTED_DIR=/app/converted
+      - SCANNED_DIR=/app/scanned
+      - PORT=4000
+    expose:
+      - "4000"
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api

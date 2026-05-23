@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const tableStyle = {
@@ -33,19 +33,8 @@ function SortIcon({ dir }) {
   );
 }
 
-export default function FilmRollsTable({ rolls }) {
+export default function FilmRollsTable({ rolls, sortKey, sortDir, onSort }) {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState('film_roll_num');
-  const [sortDir, setSortDir] = useState('asc');
-
-  function handleSort(key) {
-    if (key === sortKey) {
-      setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortKey(key);
-      setSortDir('asc');
-    }
-  }
 
   const sorted = useMemo(() => {
     return [...rolls].sort((a, b) => {
@@ -65,7 +54,7 @@ export default function FilmRollsTable({ rolls }) {
           {COLUMNS.map(col => (
             <th
               key={col.key}
-              onClick={() => handleSort(col.key)}
+              onClick={() => onSort(col.key)}
               style={{
                 textAlign: 'left',
                 padding: '10px 16px',

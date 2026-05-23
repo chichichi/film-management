@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import FilmRollsTable from '../components/FilmRollsTable';
 import { getFilmRolls } from '../api';
 
@@ -11,11 +12,28 @@ const selectStyle = {
 };
 
 export default function FilmRolls() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [rolls, setRolls] = useState([]);
   const [error, setError] = useState(null);
   const [cameraFilter, setCameraFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [sizeFilter, setSizeFilter] = useState('');
+
+  const sortKey = searchParams.get('sort') || 'film_roll_num';
+  const sortDir = searchParams.get('dir') || 'asc';
+
+  function handleSort(key) {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      if (key === sortKey) {
+        next.set('dir', sortDir === 'asc' ? 'desc' : 'asc');
+      } else {
+        next.set('sort', key);
+        next.set('dir', 'asc');
+      }
+      return next;
+    }, { replace: true });
+  }
 
   useEffect(() => {
     getFilmRolls().then(setRolls).catch(setError);
@@ -58,7 +76,7 @@ export default function FilmRolls() {
         )}
       </div>
 
-      <FilmRollsTable rolls={filtered} />
+      <FilmRollsTable rolls={filtered} sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
     </div>
   );
 }

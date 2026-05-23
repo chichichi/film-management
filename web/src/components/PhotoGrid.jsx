@@ -18,8 +18,8 @@ const imgWrapStyle = {
 export default function PhotoGrid({ photos, onSelect }) {
   return (
     <div style={gridStyle}>
-      {photos.map(photo => (
-        <div key={photo.ctlNum} style={imgWrapStyle} onClick={() => onSelect(photo)}>
+      {photos.map((photo, i) => (
+        <div key={photo.ctlNum} style={imgWrapStyle} onClick={() => onSelect(i)}>
           <img
             src={thumbUrl(photo.baseName)}
             alt={`Photo ${photo.ctlNum}`}

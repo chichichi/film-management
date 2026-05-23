@@ -8,6 +8,7 @@ const createCamerasRouter = require('./routes/cameras');
 const createFilmsRouter = require('./routes/films');
 const createStatsRouter = require('./routes/stats');
 const createPhotosRouter = require('./routes/photos');
+const { startWatcher } = require('./watcher');
 
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../film.db');
 const CONVERTED_DIR = process.env.CONVERTED_DIR || path.join(__dirname, '../../converted');
@@ -24,6 +25,8 @@ app.use('/api/cameras', createCamerasRouter(db));
 app.use('/api/films', createFilmsRouter(db));
 app.use('/api/stats', createStatsRouter(db));
 app.use('/api/photos', createPhotosRouter(db, CONVERTED_DIR, SCANNED_DIR));
+
+startWatcher(db, CONVERTED_DIR, SCANNED_DIR);
 
 if (require.main === module) {
   const PORT = process.env.PORT || 4000;

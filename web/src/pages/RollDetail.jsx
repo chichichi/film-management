@@ -25,7 +25,7 @@ export default function RollDetail() {
   const { id } = useParams();
   const [roll, setRoll] = useState(null);
   const [photos, setPhotos] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [selectedIdx, setSelectedIdx] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -62,11 +62,16 @@ export default function RollDetail() {
 
       {photos.length === 0
         ? <p style={{ color: '#888' }}>No converted photos found for this roll.</p>
-        : <PhotoGrid photos={photos} onSelect={setSelected} />
+        : <PhotoGrid photos={photos} onSelect={setSelectedIdx} />
       }
 
-      {selected && (
-        <Lightbox photo={selected} onClose={() => setSelected(null)} />
+      {selectedIdx !== null && (
+        <Lightbox
+          photos={photos}
+          index={selectedIdx}
+          onClose={() => setSelectedIdx(null)}
+          onNavigate={setSelectedIdx}
+        />
       )}
     </div>
   );
